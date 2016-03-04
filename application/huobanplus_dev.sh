@@ -20,6 +20,7 @@ ftp -n api.open.fancat.cn <<EOF
 quote USER $ApiOpenFancatCnAccount
 quote PASS $ApiOpenFancatCnPassword
 cd /JavaDevelopmentEnvironment/tomcat_dev/huobanplusapps/
+bin
 put $war ROOT.war
 exit
 EOF
