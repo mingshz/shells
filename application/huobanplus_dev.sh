@@ -9,6 +9,7 @@
 #
 PWD=`pwd`
 war=$PWD"/webservice/target/ROOT.war"
+echo "[CISHELL] deploying $war"
 if [ ! -e $war -o ! -f $war -o ! -r $war ]
 then
   echo "no $war found!"
