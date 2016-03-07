@@ -8,6 +8,22 @@
 # 以及一个tomcat home
 # HB_CATALINA_HOME
 # HB_CATALINA_BASE_TAR
+
+# 准备一个脚本文件
+function MakeTomcatScript(){
+  # $0 文件名 $1 指令
+  echo "#!/bin/sh" > $1
+  echo "export CATALINA_HOME=${HB_CATALINA_HOME}" >> $1
+  echo "export CATALINA_BASE=${NEWHOME}/tomcat" >> $1
+  echo "export TOMCAT_USER=${NAME}" >> $1
+  echo "export JSVC_OPTS=\"-cwd ${NEWHOME}/tomcat\"" >> $1
+  echo "${HB_CATALINA_HOME}/bin/daemon.sh $2" >> $1
+  chmod +x $1
+  chmod o-x $1
+  chmod u+s $1
+  # chmod u+s
+}
+
 . addprojectmanager.sh
 
 if [ $UID -ne 0 ]; then
@@ -46,9 +62,10 @@ if [[ ! ${HB_CATALINA_BASE_TAR} ]]; then
 fi
 
 NEWHOME=/home/${NAME}
-echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR} ${NEWHOME}
+# echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR} ${NEWHOME}
 
 
+# 检查tomcat服务器以及实例压缩包
 if [ ! -e $HB_CATALINA_HOME -o ! -d $HB_CATALINA_HOME ]
 then
   echo "${HB_CATALINA_HOME} do not exist."
@@ -61,28 +78,37 @@ then
   exit 1
 fi
 
+# 检查用户名是否可用
 if [ -e ${NEWHOME} ]
 then
   echo "${NEWHOME} already existing."
   exit 1
 fi
 
+# 新增用户
 useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NEWHOME} Account" ${NAME}
+# 在开发模式中 给予组权限
 if [[ ${DEV} -eq 1 ]]; then
   chmod g+rw ${NEWHOME}
 fi
 
+# 解压缩 并且更名
 tar zxvf ${HB_CATALINA_BASE_TAR} -C ${NEWHOME}
 mv ${NEWHOME}/tomcat_home_template ${NEWHOME}/tomcat
-chown -R ${NAME}:${NAME} ${NEWHOME}/tomcat
-if [[ ${DEV} -eq 1 ]]; then
-  chmod -R g+rw ${NEWHOME}/tomcat
-fi
+
 
 # 默认关闭ajp，并且修改http port为指定值
 
 # 制作启动脚本 和后台运行脚本 需要了解如何将伪装一个其他用户的权限
-# chmod u+s
+MakeTomcatScript ${NEWHOME}/startTomcat start
+MakeTomcatScript ${NEWHOME}/stopTomcat stop
+MakeTomcatScript ${NEWHOME}/runTomcat run
+MakeTomcatScript ${NEWHOME}/versionTomcat version
+
+chown -R ${NAME}:${NAME} ${NEWHOME}
+if [[ ${DEV} -eq 1 ]]; then
+  chmod -R g+rw ${NEWHOME}/tomcat
+fi
 
 # 将需要管理这个开发程序的人 加入到该组
 AddProjectManager $NAME CJ
