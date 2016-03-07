@@ -64,7 +64,7 @@ then
   exit 1
 fi
 
-useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NEWHOME} Account"
+useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NEWHOME} Account" ${NAME}
 if [[ ${DEV} -eq 1 ]]; then
   chmod g+rw ${NEWHOME}
 fi
