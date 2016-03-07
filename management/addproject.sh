@@ -68,3 +68,10 @@ useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NEWHOME} Account" ${NAM
 if [[ ${DEV} -eq 1 ]]; then
   chmod g+rw ${NEWHOME}
 fi
+
+tar zxvf ${HB_CATALINA_BASE_TAR} -C ${NEWHOME}
+mv ${NEWHOME}/tomcat_home_template ${NEWHOME}/tomcat
+chown -R ${NAME}:${NAME} ${NEWHOME}/tomcat
+if [[ ${DEV} -eq 1 ]]; then
+  chmod -R g+rw ${NEWHOME}/tomcat
+fi
