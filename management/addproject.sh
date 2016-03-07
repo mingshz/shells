@@ -61,9 +61,11 @@ if [[ ! ${HB_CATALINA_BASE_TAR} ]]; then
   HB_CATALINA_BASE_TAR=/usr/share/tomcat_base.tar.gz
 fi
 
-NEWHOME=/home/${NAME}
+if [[ ! -e /projects ]]; then
+  mkdir /projects
+fi
+NEWHOME=/projects/${NAME}
 # echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR} ${NEWHOME}
-
 
 # 检查tomcat服务器以及实例压缩包
 if [ ! -e $HB_CATALINA_HOME -o ! -d $HB_CATALINA_HOME ]

@@ -13,6 +13,7 @@ function AddProjectManager(){
     echo "$0 [project] [LOGIN]"
     exit 1
   fi
+  # 移除组请使用 usermod -G group1,group2 LOGIN
   usermod -aG $1 $2
 }
 
