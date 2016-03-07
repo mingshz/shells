@@ -13,6 +13,7 @@
 function MakeTomcatScript(){
   # $0 文件名 $1 指令
   echo "#!/bin/sh" > $1
+  echo "export JAVA_HOME=${JAVA_HOME}" >> $1
   echo "export CATALINA_HOME=${HB_CATALINA_HOME}" >> $1
   echo "export CATALINA_BASE=${NEWHOME}/tomcat" >> $1
   echo "export TOMCAT_USER=${NAME}" >> $1
@@ -61,16 +62,23 @@ if [[ ! ${HB_CATALINA_BASE_TAR} ]]; then
   HB_CATALINA_BASE_TAR=/usr/share/tomcat_base.tar.gz
 fi
 
-if [[ ! -e /projects ]]; then
-  mkdir /projects
+if [[ ! ${JAVA_HOME} ]]; then
+  JAVA_HOME=/usr/java/jdk1.8.0_66
 fi
-NEWHOME=/projects/${NAME}
+
+NEWHOME=/home/${NAME}
 # echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR} ${NEWHOME}
 
 # 检查tomcat服务器以及实例压缩包
 if [ ! -e $HB_CATALINA_HOME -o ! -d $HB_CATALINA_HOME ]
 then
   echo "${HB_CATALINA_HOME} do not exist."
+  exit 1
+fi
+
+if [ ! -e $JAVA_HOME -o ! -d $JAVA_HOME ]
+then
+  echo "${JAVA_HOME} do not exist."
   exit 1
 fi
 
@@ -110,6 +118,8 @@ MakeTomcatScript ${NEWHOME}/versionTomcat version
 chown -R ${NAME}:${NAME} ${NEWHOME}
 if [[ ${DEV} -eq 1 ]]; then
   chmod -R g+rw ${NEWHOME}/tomcat
+  # ACL控制
+  setfacl -m group:${NAME}:rwx ${NEWHOME}
 fi
 
 # 将需要管理这个开发程序的人 加入到该组
