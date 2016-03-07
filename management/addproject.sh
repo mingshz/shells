@@ -35,6 +35,36 @@ if [[ ! $PORT ]]; then
   exit 1
 fi
 
-env
+if [[ ! ${HB_CATALINA_HOME} ]]; then
+  HB_CATALINA_HOME=/usr/share/apache-tomcat-8.0.23
+fi
 
-echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR}
+if [[ ! ${HB_CATALINA_BASE_TAR} ]]; then
+  HB_CATALINA_BASE_TAR=/usr/share/tomcat_base.tar.gz
+fi
+
+NEWHOME=/home/${NAME}
+# echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR} ${NEWHOME}
+
+if [ ! -e $HB_CATALINA_HOME -o ! -d $HB_CATALINA_HOME ]
+then
+  echo "${HB_CATALINA_HOME} do not exist."
+  exit 1
+fi
+
+if [ ! -e ${HB_CATALINA_BASE_TAR} ]
+then
+  echo "${HB_CATALINA_BASE_TAR} do not exist."
+  exit 1
+fi
+
+if [ -e ${NEWHOME} ]
+then
+  echo "${NEWHOME} already existing."
+  exit 1
+fi
+
+useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NEWHOME} Account"
+if [[ ${DEV} -eq 1 ]]; then
+  chmod g+rw ${NEWHOME}
+fi
