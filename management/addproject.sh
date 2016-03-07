@@ -8,6 +8,8 @@
 # 以及一个tomcat home
 # HB_CATALINA_HOME
 # HB_CATALINA_BASE_TAR
+. addprojectmanager.sh
+
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     echo "e.g. \"sudo $0\""
@@ -44,7 +46,8 @@ if [[ ! ${HB_CATALINA_BASE_TAR} ]]; then
 fi
 
 NEWHOME=/home/${NAME}
-# echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR} ${NEWHOME}
+echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR} ${NEWHOME}
+
 
 if [ ! -e $HB_CATALINA_HOME -o ! -d $HB_CATALINA_HOME ]
 then
@@ -74,4 +77,15 @@ mv ${NEWHOME}/tomcat_home_template ${NEWHOME}/tomcat
 chown -R ${NAME}:${NAME} ${NEWHOME}/tomcat
 if [[ ${DEV} -eq 1 ]]; then
   chmod -R g+rw ${NEWHOME}/tomcat
+fi
+
+# 默认关闭ajp，并且修改http port为指定值
+
+# 制作启动脚本 和后台运行脚本 需要了解如何将伪装一个其他用户的权限
+# chmod u+s
+
+# 将需要管理这个开发程序的人 加入到该组
+AddProjectManager $NAME CJ
+if [[ ${DEV} -eq 1 ]]; then
+  AddProjectManager $NAME jenkins
 fi
