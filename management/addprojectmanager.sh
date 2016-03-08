@@ -14,6 +14,8 @@ function AddProjectManager(){
     exit 1
   fi
   # 移除组请使用 usermod -G group1,group2 LOGIN
+  # 比如 sudo usermod -G CJ,wheel,apache CJ
+  # sudo usermod -G jenkins,root jenkins
   usermod -aG $1 $2
 }
 

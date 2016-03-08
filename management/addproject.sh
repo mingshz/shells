@@ -110,6 +110,7 @@ mv ${NEWHOME}/tomcat_home_template ${NEWHOME}/tomcat
 # 默认关闭ajp，并且修改http port为指定值
 
 # 制作启动脚本 和后台运行脚本 需要了解如何将伪装一个其他用户的权限
+# http://unix.stackexchange.com/questions/364/allow-setuid-on-shell-scripts
 MakeTomcatScript ${NEWHOME}/startTomcat start
 MakeTomcatScript ${NEWHOME}/stopTomcat stop
 MakeTomcatScript ${NEWHOME}/runTomcat run
