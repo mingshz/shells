@@ -220,6 +220,7 @@ fi
 echo "" >> ${NEWHOME}/README
 echo "  Project Name:$NAME" >> ${NEWHOME}/README
 echo "  Project Home:$NEWHOME" >> ${NEWHOME}/README
+echo "  Tomcat Home:$NEWHOME/tomcat" >> ${NEWHOME}/README
 IP=`ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'`
 echo "  Project URL:http://$IP:$PORT/" >> ${NEWHOME}/README
 echo "" >> ${NEWHOME}/README
