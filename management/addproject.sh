@@ -202,9 +202,27 @@ fi
 
 chmod u+s ${NEWHOME}/startTomcat
 chmod u+s ${NEWHOME}/stopTomcat
+chmod g+s ${NEWHOME}/startTomcat
+chmod g+s ${NEWHOME}/stopTomcat
 
 # 将需要管理这个开发程序的人 加入到该组
 AddProjectManager $NAME CJ
 if [[ ${DEV} -eq 1 ]]; then
   AddProjectManager $NAME jenkins
 fi
+
+if [[ $DEV == 0 ]]; then
+  echo "        Deploy Summary" > ${NEWHOME}/README
+else
+  echo "        Development Deploy Summary" > ${NEWHOME}/README
+fi
+echo "" >> ${NEWHOME}/README
+echo "  Project Name:$NAME" >> ${NEWHOME}/README
+echo "  Project Home:$NEWHOME" >> ${NEWHOME}/README
+IP=`ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'`
+echo "  Project URL:http://$IP:$PORT/" >> ${NEWHOME}/README
+echo "" >> ${NEWHOME}/README
+echo "${NEWHOME}/startTomcat to start instance" >> ${NEWHOME}/README
+echo "${NEWHOME}/stopTomcat to stop instance" >> ${NEWHOME}/README
+
+cat ${NEWHOME}/README
