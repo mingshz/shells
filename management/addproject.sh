@@ -1,4 +1,5 @@
 #!/bin/bash
+# Authored By Cai Jiang
 # 添加一个项目，该项目同名也会添加一个无法直接登录的系统用户
 # 目标
 # 然后会把相关tomcat实例复制一份到home目录,如果是测试范畴还会将rw权限开放给group

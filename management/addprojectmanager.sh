@@ -1,4 +1,5 @@
 #!/bin/bash
+# Authored By Cai Jiang
 # 增加指定项目的管理员
 
 function AddProjectManager(){
