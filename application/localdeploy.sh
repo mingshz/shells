@@ -18,4 +18,4 @@ then
 fi
 
 cp $war $2
-return $?
+exit $?
