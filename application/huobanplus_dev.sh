@@ -13,9 +13,17 @@ echo "[CISHELL] deploying $war"
 if [ ! -e $war -o ! -f $war -o ! -r $war ]
 then
   echo "no $war found!"
-  exit 0
+  exit 1
 fi
 
+if [[ ! $ApiOpenFancatCnAccount ]]; then
+  echo "set ApiOpenFancatCnAccount first"
+  exit 1
+fi
+if [[ ! $ApiOpenFancatCnPassword ]]; then
+  echo "set ApiOpenFancatCnPassword first"
+  exit 1
+fi
 # 如何输入密码？ 参考 http://www.stratigery.com/scripting.ftp.html
 ftp -n api.open.fancat.cn <<EOF
 quote USER $ApiOpenFancatCnAccount
