@@ -2,6 +2,9 @@
 # Authored By Cai Jiang
 # 增加指定项目的管理员
 
+# 还应当完成资源的自动管理 tomcat内的资源字符
+# 以及项目的移除
+
 function AddProjectManager(){
 # 第一个参数项目名称  第二个参数LOGIN
   if [[ ! $1 ]]; then
