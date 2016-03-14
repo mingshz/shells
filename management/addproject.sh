@@ -174,7 +174,7 @@ then
 fi
 
 # 新增用户
-useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NEWHOME} Account" ${NAME}
+useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NAME} Account" ${NAME}
 # 在开发模式中 给予组权限
 if [[ ${DEV} -eq 1 ]]; then
   chmod g+rw ${NEWHOME}
@@ -212,6 +212,15 @@ if [[ ${DEV} -eq 1 ]]; then
   AddProjectManager $NAME jenkins
 fi
 
+# 是否有必要创建资源文件夹
+ResourceHome="/var/www/html/resources/"
+unset ResourceCreated
+if [[ -e $ResourceHome && -d $ResourceHome ]]; then
+  mkdir ${ResourceHome}${NAME}
+  ResourceCreated=true
+  chown -R ${NAME}:${NAME} ${ResourceHome}${NAME}
+fi
+
 if [[ $DEV == 0 ]]; then
   echo "        Deploy Summary" > ${NEWHOME}/README
 else
@@ -223,6 +232,10 @@ echo "  Project Home:$NEWHOME" >> ${NEWHOME}/README
 echo "  Tomcat Home:$NEWHOME/tomcat" >> ${NEWHOME}/README
 IP=`ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'`
 echo "  Project URL:http://$IP:$PORT/" >> ${NEWHOME}/README
+if [[ $ResourceCreated == true ]]; then
+  echo "  Resource URL:http://$IP/resources/$NAME" >> ${NEWHOME}/README
+  echo "  Resource HOME:${ResourceHome}${NAME}" >> ${NEWHOME}/README
+fi
 echo "" >> ${NEWHOME}/README
 echo "${NEWHOME}/startTomcat to start instance" >> ${NEWHOME}/README
 echo "${NEWHOME}/stopTomcat to stop instance" >> ${NEWHOME}/README
