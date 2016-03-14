@@ -9,6 +9,18 @@
 # RemoveGroupFromUser [GROUP] [LOGIN]
 function RemoveGroupFromUser(){
   echo $1 $2
+  GroupName=`groups $2|cut -f2 -d':'|sed 's/[ \t]*$//'|sed 's/^[ \t]*//'|cut -f1 -d' '`
+  VAR=1
+  while [[ -n $GroupName ]]; do
+    if [[ $? != 0 ]]; then
+      echo "failed."
+      exit $?
+    fi
+    GroupNames[$[ VAR - 1 ]]=$GroupName
+    VAR=$[ VAR + 1 ]
+    echo ${GroupNames[@]}
+    GroupName=`groups $2|cut -f2 -d':'|sed 's/[ \t]*$//'|sed 's/^[ \t]*//'|cut -f$VAR -d' '`
+  done
 }
 
 if [ $UID -ne 0 ]; then
