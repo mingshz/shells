@@ -20,9 +20,9 @@ if [[ ! ${HB_CATALINA_BASE_TAR} ]]; then
   HB_CATALINA_BASE_TAR=/usr/share/tomcat_base.tar.gz
 fi
 
-if [[ ! ${JAVA_HOME} ]]; then
-  JAVA_HOME=/usr/java/jdk1.8.0_66
-fi
+# if [[ ! ${JAVA_HOME} ]]; then
+#   JAVA_HOME=/usr/java/jdk1.8.0_66
+# fi
 
 
 gcc=`gcc --version`
@@ -151,18 +151,23 @@ fi
 if [ ! -e $HB_CATALINA_HOME -o ! -d $HB_CATALINA_HOME ]
 then
   echo "${HB_CATALINA_HOME} do not exist."
+  echo "echo 'export HB_CATALINA_HOME=' >> /etc/environment"
+  echo "to set environment well."
   exit 1
 fi
 
-if [ ! -e $JAVA_HOME -o ! -d $JAVA_HOME ]
-then
+if [[ -z $JAVA_HOME || ! -e $JAVA_HOME || ! -d $JAVA_HOME ]]; then
   echo "${JAVA_HOME} do not exist."
+  echo "echo 'export JAVA_HOME=' >> /etc/environment"
+  echo "to set environment well."
   exit 1
 fi
 
 if [ ! -e ${HB_CATALINA_BASE_TAR} ]
 then
   echo "${HB_CATALINA_BASE_TAR} do not exist."
+  echo "echo 'export HB_CATALINA_BASE_TAR=' >> /etc/environment"
+  echo "to set environment well."
   exit 1
 fi
 
@@ -172,6 +177,11 @@ then
   echo "${NEWHOME} already existing."
   exit 1
 fi
+
+# 如果存在/data1/projects 则创建在 /data1/projects/name_home
+# 并且ln -s /data1/projects/name_home/tomcat ./tomcat
+# 还有就是关于连接的。。
+# 建立服务
 
 # 新增用户
 useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NAME} Account" ${NAME}
@@ -195,11 +205,11 @@ MakeTomcatScript ${NEWHOME}/startTomcat start
 MakeTomcatScript ${NEWHOME}/stopTomcat stop
 
 chown -R ${NAME}:${NAME} ${NEWHOME}
-if [[ ${DEV} -eq 1 ]]; then
+# if [[ ${DEV} -eq 1 ]]; then
   chmod -R g+rw ${NEWHOME}/tomcat
   # ACL控制
   setfacl -m group:${NAME}:rwx ${NEWHOME}
-fi
+# fi
 
 chmod u+s ${NEWHOME}/startTomcat
 chmod u+s ${NEWHOME}/stopTomcat
