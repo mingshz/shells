@@ -207,8 +207,8 @@ MakeTomcatScript ${NEWHOME}/stopTomcat stop
 chown -R ${NAME}:${NAME} ${NEWHOME}
 # ACL控制
 setfacl -m group:${NAME}:rwx ${NEWHOME}
-if [[ ${DEV} -eq 1 ]]; then
-fi
+# if [[ ${DEV} -eq 1 ]]; then
+# fi
 
 chmod u+s ${NEWHOME}/startTomcat
 chmod u+s ${NEWHOME}/stopTomcat
