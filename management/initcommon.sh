@@ -34,7 +34,7 @@ fi
 tar -C /root -xzf /root/setup.tar.gz
 # install
 
-# rpm -ivh /root/setup/install/*.rpm
+rpm -ivh /root/setup/install/*.rpm
 # 安装完毕提取Java目录到环境中
 RPMJDK=`rpm -qa | grep jdk`
 if [[ ! $RPMJDK ]]; then
