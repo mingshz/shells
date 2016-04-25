@@ -45,8 +45,8 @@ fi
 Memory=`free -g | grep Mem | awk '{print $2}'`
 
 # 计划设置一块跟物理内存一样的虚拟内存
-echo ${VOLUME}
-echo ${BIG}
+# echo ${VOLUME}
+# echo ${BIG}
 if [[ ${BIG} -le ${Memory} ]]; then
   echo "length of ${DISKFILE} is too small to use."
   exit 1
