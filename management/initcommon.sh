@@ -3,6 +3,9 @@
 # 初始化一个CentOS 服务器
 # 该脚本负责初始化 一些常用服务
 # 缺 禁止root远程登录
+# 还缺少给httpd服务增加一个默认的虚拟服务器
+# 缺少自动配置jk
+# 缺少自动配置资源目录
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     echo "e.g. \"sudo $0\""
