@@ -6,6 +6,8 @@
 # 还缺少给httpd服务增加一个默认的虚拟服务器
 # 缺少自动配置jk
 # 缺少自动配置资源目录
+# 自动的addproject还不成熟 比如自动service
+# 参考 https://scottlinux.com/2014/12/08/how-to-create-a-systemd-service-in-linux-centos-7/
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     echo "e.g. \"sudo $0\""
