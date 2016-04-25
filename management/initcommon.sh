@@ -18,6 +18,9 @@ systemctl enable memcached
 systemctl enable httpd
 systemctl enable firewalld
 
+# 将http端口开放
+firewall-cmd --add-service=http --permanent
+
 # 获取我们精心准备的发布包
 if [[ ! -e /root/setup.tar.gz ]]; then
   wget -O /root/setup.tar.gz http://resali.huobanplus.com/huobanplus/setup.tar.gz
