@@ -22,6 +22,7 @@ systemctl enable redis
 systemctl enable memcached
 systemctl enable httpd
 systemctl enable firewalld
+systemctl start firewalld
 
 # 将http端口开放
 firewall-cmd --add-service=http --permanent
