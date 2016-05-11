@@ -1,0 +1,27 @@
+# support properties
+# port.ajp 8009
+# port.iiop 3528
+# port.iiop-ssl 3529
+# port.jgroups-tcp 7600
+# port.jgroups-tcp-fd 57600
+# port.modcluster 23364
+# address.modcluster 224.0.1.105
+# port.txn-recovery 4712
+# port.txn-status 4713
+
+/socket-binding-group=full-ha-sockets/remote-destination-outbound-socket-binding=apache:add(host=10.24.145.73,port=6666)
+/socket-binding-group=full-ha-sockets/socket-binding=jgroups-tcp:write-attribute(name=interface,value=management)
+
+#/socket-binding-group=-cluster-sockets:remove
+/socket-binding-group=-cluster-sockets:add(default-interface=public)
+/socket-binding-group=-cluster-sockets/socket-binding=ajp:add(port=${jboss.ajp.port:8009})
+/socket-binding-group=-cluster-sockets/socket-binding=http:add(port=${jboss.http.port:8080})
+/socket-binding-group=-cluster-sockets/socket-binding=https:add(port=${jboss.https.port:8443})
+/socket-binding-group=-cluster-sockets/socket-binding=iiop:add(port=3528,interface=unsecure)
+/socket-binding-group=-cluster-sockets/socket-binding=iiop-ssl:add(port=3529,interface=unsecure)
+/socket-binding-group=-cluster-sockets/socket-binding=jgroups-tcp:add(port=7600,interface=management)
+/socket-binding-group=-cluster-sockets/socket-binding=jgroups-tcp-fd:add(port=57600,interface=private)
+/socket-binding-group=-cluster-sockets/socket-binding=modcluster:add(port=0,multicast-address=224.0.1.105,multicast-port=23364)
+/socket-binding-group=-cluster-sockets/socket-binding=txn-recovery-environment:add(port=4712)
+/socket-binding-group=-cluster-sockets/socket-binding=txn-status-manager:add(port=4713)
+/socket-binding-group=-cluster-sockets2/remote-destination-outbound-socket-binding=mail-smtp:add(host=localhost,port=25)

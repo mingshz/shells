@@ -1,0 +1,53 @@
+# 创建一个完整的项目-- 通常是一个集群
+# name 名称必须为英文 必须 比如supplier
+# iaddress 内网IP 必须 10.170.9.204
+# remove!!! short.ihost 本机缩写 必须 204
+# domain.web 项目域名 localhost
+# content.web 默认的web content  ROOT.war
+# port.MCPM 6666
+# port.jgroups-tcp 7600
+# port.offset 0
+
+# https://blog.akquinet.de/2012/07/19/scalable-ha-clustering-with-jboss-as-7-eap-6/
+
+# socket-binding do not create binding anymore, use full-ha-sockets instead
+# /socket-binding-group=${name}-sockets:add(default-interface=public)
+# /socket-binding-group=${name}-sockets:list-add(name=includes,value=-cluster-sockets)
+# /socket-binding-group=${name}-sockets/remote-destination-outbound-socket-binding=apache:add(host=${iaddress},port=${port.MCPM:6666})
+
+# profile
+/profile=full-ha:clone(to-profile=${name}-profile)
+/profile=${name}-profile/subsystem=modcluster/mod-cluster-config=configuration:list-add(name=proxies,value=apache)
+#/profile=${name}-profile/subsystem=modcluster/mod-cluster-config=configuration:write-attribute(name=balancer,value=${name})
+/profile=${name}-profile/subsystem=modcluster/mod-cluster-config=configuration:write-attribute(name=load-balancing-group,value=${name})
+/profile=${name}-profile/subsystem=jgroups/stack=udp:remove
+/profile=${name}-profile/subsystem=jgroups/stack=tcp:remove
+/profile=${name}-profile/subsystem=jgroups/stack=tcp:add(transport={type=>TCP})
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/transport=TCP:write-attribute(name=socket-binding,value=jgroups-tcp)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/protocol=TCPPING:add(socket-binding=jgroups-tcp)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=MERGE3)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=FD_SOCK,socket-binding=jgroups-tcp-fd)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=FD)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=VERIFY_SUSPECT)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=pbcast.NAKACK2)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=UNICAST3)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=pbcast.STABLE)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=pbcast.GMS)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=MFC)
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/:add-protocol(type=FRAG2)
+/profile=${name}-profile/subsystem=jgroups/channel=ee:write-attribute(name=stack,value=tcp)
+# 加入每一个sever的jgroup tcp
+/profile=${name}-profile/subsystem=jgroups/stack=tcp/protocol=TCPPING/property=initial_hosts/:add(value="${iaddress}[${port.jgroups-tcp:7700}]")
+
+# 删除http-listener 删除了会导致 jboss.http-upgrade-registry.default 报错 但没想明白为什么会报错……
+# /profile=${name}-profile/subsystem=undertow/server=default-server/http-listener=default:remove
+
+/profile=${name}-profile/subsystem=undertow/server=default-server/host=default-host:list-clear(name=alias)
+# 默认alias
+/profile=${name}-profile/subsystem=undertow/server=default-server/host=default-host:list-add(name=alias,value=${domain.web:localhost})
+/profile=${name}-profile/subsystem=undertow/server=default-server/host=default-host:write-attribute(name=default-web-module,value=${content.web:ROOT.war})
+# 鉴于mod_cluster暂时用不了 所以先移除
+/profile=${name}-profile/subsystem=modcluster:remove
+
+/server-group=${name}-group:add(profile=${name}-profile,socket-binding-group=full-ha-sockets)
+/server-group=${name}-group/jvm=default:add(heap-size=64m,max-heap-size=512m)
