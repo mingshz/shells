@@ -1,0 +1,4 @@
+# WD $WD name $name jndi $jndi jdbc $jdbc host $host port $port databaseName $databaseName username $username password $password
+cd ${WD}
+
+/subsystem=datasources/data-source=${name}:add(jndi-name=${jndi},user-name=${username},password=${password},driver-name=${jdbc},connection-url=jdbc:jtds:sqlserver://${host}:${port}/${databaseName},valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.mssql.MSSQLValidConnectionChecker,use-ccm=true,jta=true,background-validation=true)

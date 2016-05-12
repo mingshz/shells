@@ -1,6 +1,6 @@
 #!/bin/bash
 # 增加数据源
-# addds.sh XA|NOXA mysql|jtds|sqlserver host port databaseName user password [profile|S for Standlone mode] [driver]
+# addds.sh XA|NOXA mysql|jtds|sqlserver name jndi host port databaseName user password [profile|S for Standlone mode] [driver]
 # driver for install driver
 XA=false
 
@@ -8,15 +8,22 @@ if [[ $1 = "XA" ]]; then
   XA=true
 fi
 jdbc=$2
-host=$3
-port=$4
-databaseName=$5
-user=$6
-password=$7
-profileName=$8
-installDriver=$9
-if [[ ! $jdbc || ! $host || ! $port || ! $databaseName || ! $user || ! $password ]]; then
-  echo "$0 XA|NOXA mysql|jtds|sqlserver host port databaseName user password [profile|S for Standlone mode] [driver]"
+dsName=$3
+jndi=$4
+host=$5
+port=$6
+databaseName=$7
+user=$8
+password=$9
+profileName=${10}
+installDriver=${11}
+if [[ ! $jdbc || ! $host || ! $port || ! $databaseName || ! $user || ! $password || ! $dsName || ! $jndi ]]; then
+  echo "$0 XA|NOXA mysql|jtds|sqlserver name jndi host port databaseName user password [profile|S for Standlone mode] [driver]"
+  exit 1
+fi
+
+if [[  ${jndi:0:6} != 'java:/' ]]; then
+  echo "JNDI-name should begin as java:/. $jndi is bad jndi."
   exit 1
 fi
 
@@ -48,6 +55,11 @@ fi
 SCRIPTPATH=`dirname "$0"`
 SCRIPTPATH=`exec 2>/dev/null;(cd -- "$mypath") && cd -- "$mypath"|| cd "$mypath"; unset PWD; /usr/bin/pwd || /bin/pwd || pwd`
 
+if [[ ! -e $SCRIPTPATH/$jdbc ]]; then
+  echo "$jdbc not support yet."
+  exit 1
+fi
+
 . $SCRIPTPATH/core.sh
 
 if [[ $toAddJdbc = true ]]; then
@@ -67,5 +79,15 @@ if [[ $toAddJdbc = true ]]; then
     ;;
   esac
 
-  # execCLI initmaster.cli
 fi
+
+if [[ $XA = true ]]; then
+  cliFile=$jdbc/XA.cli
+else
+  cliFile=$jdbc/NOXA.cli
+fi
+
+# java:/
+# echo WD $WD name $dsName jndi $jndi jdbc $jdbc host $host port $port databaseName $databaseName username $user password $password
+
+execCLI $cliFile WD $WD name $dsName jndi $jndi jdbc $jdbc host $host port $port databaseName $databaseName username $user password $password
