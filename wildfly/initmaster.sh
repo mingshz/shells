@@ -5,11 +5,11 @@
 # TODO jdbc
 
 # 获取当前文件夹
-SCRIPT=$(readlink -f "$0")
-SCRIPTPATH=$(dirname "$SCRIPT")
+SCRIPTPATH=`dirname "$0"`
+SCRIPTPATH=`exec 2>/dev/null;(cd -- "$mypath") && cd -- "$mypath"|| cd "$mypath"; unset PWD; /usr/bin/pwd || /bin/pwd || pwd`
 
 . $SCRIPTPATH/core.sh
-
+. $SCRIPTPATH/jdbcmodule.sh
 # NAME=$1
 # if [[ ! $NAME ]]; then
 #   echo "$0 --dev [name] [port] or $0 [name] [port]"
