@@ -41,10 +41,14 @@ function SetupJdbc(){
     return
   fi
 
-  mkdir -p $ModulePath
-  cp ${HB_CATALINA_HOME}/lib/$JarName $ModulePath/
+  PRE=""
+  if [[ $WILDFLY_USER ]]; then
+    PRE="sudo runuser -u $WILDFLY_USER "
+  fi
+  $PRE mkdir -p $ModulePath
+  $PRE cp ${HB_CATALINA_HOME}/lib/$JarName $ModulePath/
 
-  echo -e "\
+  $PRE echo -e "\
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
 <module xmlns=\"urn:jboss:module:1.3\" name=\"$PackageName\">\n\
   <resources>\n\

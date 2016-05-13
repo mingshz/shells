@@ -23,6 +23,11 @@ function UpgradeModule(){
     shift
   done
 
+  PRE=""
+  if [[ $WILDFLY_USER ]]; then
+    PRE="sudo runuser -u $WILDFLY_USER "
+  fi
+
   if [[ ! $Version || ! $PackageName || ! $PackagePath ]]; then
     echo "not enough arguments."
     echo "UpgradeModule version packages...."
@@ -47,14 +52,14 @@ function UpgradeModule(){
     return
   fi
 
-  wget -O $JarPath $MVNURL
+  $PRE wget -O $JarPath $MVNURL
 
   if [[ $? != 0 ]]; then
     echo "failed download $MVNURL"
-    rm -f $JarPath
+    $PRE rm -f $JarPath
     return
   fi
 
-  sed -i -e "s/$artifactId.*.jar/$artifactId-$Version.jar/g" $ModulePath/module.xml
+  $PRE sed -i -e "s/$artifactId.*.jar/$artifactId-$Version.jar/g" $ModulePath/module.xml
   echo "Upgraded! check $ModulePath/module.xml"
 }
