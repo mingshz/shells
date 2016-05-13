@@ -53,9 +53,16 @@ else
 
   # port.MCPM $MCPM
   execCLI createProject.cli name $NAME iaddress $IP port.offset $OFFSET port.jgroups-tcp $JGROUPS domain.web ${DOMAIN} content.web ${Content}
-  echo "$NAME-profile , $NAME-sockets, $NAME-group created. exec cli:"
+  echo ""
+  echo ""
+  echo ""
+  echo "   Create Summary"
+  echo "$NAME-profile , $NAME-sockets, $NAME-group created."
+  echo ""
+  echo "to create server at master:"
   echo "/host=master/server-config=${NAME}xxx:add(group=${NAME}-group, auto-start=true, socket-binding-port-offset=$OFFSET)"
-  echo "to create server at master; exec cli:"
-  echo "/server-group=$NAME-group/system-property=[property-name]:add(value=\"[property-value]\")"
+  echo ""
   echo "to add system property"
+  echo "/server-group=$NAME-group/system-property=[property-name]:add(value=\"[property-value]\")"
+
 fi
