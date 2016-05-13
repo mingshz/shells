@@ -2,8 +2,8 @@
 cd ${WD}
 
 
-/subsystem=datasources/xa-data-source=${name}:add(jndi-name=${jndi},user-name=${username},password=${password},driver-name=${jdbc},valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker,exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter,enabled=false,background-validation=true,use-ccm=true)
-/subsystem=datasources/xa-data-source=${name}/xa-datasource-properties=ServerName:add(value=${host})
-/subsystem=datasources/xa-data-source=${name}/xa-datasource-properties=DatabaseName:add(value=${databaseName})
-/subsystem=datasources/xa-data-source=${name}/xa-datasource-properties=PortNumber:add(value=${port})
-/subsystem=datasources/xa-data-source=${name}:write-attribute(name=enabled,value=true)
+./subsystem=datasources/xa-data-source=${name}:add(jndi-name=${jndi},user-name=${username},password=${password},driver-name=${jdbc},valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker,exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter,enabled=false,background-validation=true,use-ccm=true)
+./subsystem=datasources/xa-data-source=${name}/xa-datasource-properties=ServerName:add(value=${host})
+./subsystem=datasources/xa-data-source=${name}/xa-datasource-properties=DatabaseName:add(value=${databaseName})
+./subsystem=datasources/xa-data-source=${name}/xa-datasource-properties=PortNumber:add(value=${port})
+./subsystem=datasources/xa-data-source=${name}:write-attribute(name=enabled,value=true)

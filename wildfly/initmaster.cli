@@ -12,8 +12,8 @@
 # LBPort
 
 cd /socket-binding-group=full-ha-sockets
-/remote-destination-outbound-socket-binding=apache:add(host=${LBHost},port=${LBPort})
-/socket-binding=jgroups-tcp:write-attribute(name=interface,value=management)
+./remote-destination-outbound-socket-binding=apache:add(host=${LBHost},port=${LBPort})
+./socket-binding=jgroups-tcp:write-attribute(name=interface,value=management)
 
 #/socket-binding-group=-cluster-sockets:remove
 #/socket-binding-group=-cluster-sockets:add(default-interface=public)

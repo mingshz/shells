@@ -4,4 +4,4 @@
 # driverClassName
 # xadsClassName
 cd ${WD}
-/subsystem=datasources/jdbc-driver=${name}:add(driver-name=${name},driver-module-name=${module},,driver-class-name=${driverClassName},driver-xa-datasource-class-name=${xadsClassName})
+./subsystem=datasources/jdbc-driver=${name}:add(driver-name=${name},driver-module-name=${module},,driver-class-name=${driverClassName},driver-xa-datasource-class-name=${xadsClassName})

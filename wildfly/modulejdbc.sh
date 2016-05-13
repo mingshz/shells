@@ -36,10 +36,10 @@ function SetupJdbc(){
   # echo $PackageName $PackagePath
   ModulePath=${WILDFLY_HOME}/modules/system/layers/base/${PackagePath}main
 
-  if [[ -e $ModulePath ]]; then
-    echo "$ModulePath existing. skipping."
-    return
-  fi
+  # if [[ -e $ModulePath ]]; then
+  #   echo "$ModulePath existing. skipping."
+  #   return
+  # fi
 
   PRE=""
   if [[ $WILDFLY_USER ]]; then
@@ -48,7 +48,9 @@ function SetupJdbc(){
   $PRE mkdir -p $ModulePath
   $PRE cp ${HB_CATALINA_HOME}/lib/$JarName $ModulePath/
 
-  $PRE echo -e "\
+  TMP="$(mktemp -q -t "$(basename "$0").XXXXXX" 2>/dev/null || mktemp -q)"
+
+  echo -e "\
 <?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\
 <module xmlns=\"urn:jboss:module:1.3\" name=\"$PackageName\">\n\
   <resources>\n\
@@ -62,7 +64,13 @@ function SetupJdbc(){
 </module>\n\
 \n\
 "\
-  > $ModulePath/module.xml
+  > $TMP
+
+  if [[ $WILDFLY_USER ]]; then
+    sudo chown $WILDFLY_USER:$WILDFLY_USER $TMP
+  fi
+
+  $PRE mv $TMP $ModulePath/module.xml
   echo "setup into $ModulePath"
 }
 
