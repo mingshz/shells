@@ -20,6 +20,9 @@
 /profile=${name}-profile/subsystem=modcluster/mod-cluster-config=configuration:list-add(name=proxies,value=apache)
 #/profile=${name}-profile/subsystem=modcluster/mod-cluster-config=configuration:write-attribute(name=balancer,value=${name})
 /profile=${name}-profile/subsystem=modcluster/mod-cluster-config=configuration:write-attribute(name=load-balancing-group,value=${name})
+# 鉴于mod_cluster暂时用不了 所以先移除
+/profile=${name}-profile/subsystem=modcluster:remove
+
 /profile=${name}-profile/subsystem=jgroups/stack=udp:remove
 /profile=${name}-profile/subsystem=jgroups/stack=tcp:remove
 /profile=${name}-profile/subsystem=jgroups/stack=tcp:add(transport={type=>TCP})
@@ -46,8 +49,7 @@
 # 默认alias
 /profile=${name}-profile/subsystem=undertow/server=default-server/host=default-host:list-add(name=alias,value=${domain.web:localhost})
 /profile=${name}-profile/subsystem=undertow/server=default-server/host=default-host:write-attribute(name=default-web-module,value=${content.web:ROOT.war})
-# 鉴于mod_cluster暂时用不了 所以先移除
-/profile=${name}-profile/subsystem=modcluster:remove
+
 
 /server-group=${name}-group:add(profile=${name}-profile,socket-binding-group=full-ha-sockets)
 /server-group=${name}-group/jvm=default:add(heap-size=64m,max-heap-size=512m)

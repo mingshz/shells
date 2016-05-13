@@ -66,3 +66,5 @@ function SetupJdbc(){
 SetupJdbc mysql-connector-java-5.1.32.jar com mysql jdbc
 SetupJdbc jtds-1.3.1.jar net sourceforge jtds jdbc
 SetupJdbc sqljdbc4.jar com microsoft sqlserver jdbc
+
+# https://repo1.maven.org/maven2/
