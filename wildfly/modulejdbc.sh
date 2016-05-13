@@ -43,7 +43,7 @@ function SetupJdbc(){
 
   PRE=""
   if [[ $WILDFLY_USER ]]; then
-    PRE="sudo runuser -u $WILDFLY_USER "
+    PRE="sudo -u $WILDFLY_USER "
   fi
   $PRE mkdir -p $ModulePath
   $PRE cp ${HB_CATALINA_HOME}/lib/$JarName $ModulePath/
