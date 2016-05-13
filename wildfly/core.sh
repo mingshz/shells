@@ -18,13 +18,13 @@ function execCLI(){
   CLI=$1
 
   if [[  ${CLI:0:1} != '/' ]]; then
-    SCRIPTPATH=`dirname "$0"`
+    mypath=`dirname "$0"`
     SCRIPTPATH=`exec 2>/dev/null;(cd -- "$mypath") && cd -- "$mypath"|| cd "$mypath"; unset PWD; /usr/bin/pwd || /bin/pwd || pwd`
     CLI=$SCRIPTPATH"/"$CLI
   fi
 
   TMP="$(mktemp -q -t "$(basename "$0").XXXXXX" 2>/dev/null || mktemp -q)"
-  
+
   while [[ $2 ]]; do
     # 读取 $2和$3
     echo "$2=$3" >> $TMP
