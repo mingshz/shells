@@ -11,6 +11,11 @@
 # LBHost
 # LBPort
 
+# 增加一个超级用户
+#/core-service=management/access=authorization/role-mapping=SuperUser/include=wildfly:add(name=wildfly,realm=ManagementRealm,type=USER)
+# 修改ACL为rbac
+#/core-service=management/access=authorization:write-attribute(name=provider,value=rbac)
+
 cd /socket-binding-group=full-ha-sockets
 ./remote-destination-outbound-socket-binding=apache:add(host=${LBHost},port=${LBPort})
 ./socket-binding=jgroups-tcp:write-attribute(name=interface,value=management)
