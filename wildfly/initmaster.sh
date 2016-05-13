@@ -2,7 +2,14 @@
 # 执行初始化服务器的脚本
 
 # TODO 用户
-# TODO jdbc
+
+LBHost=$1
+LBPort=$2
+
+if [[ ! $LBHost || ! LBPort ]]; then
+  echo "$0 LoadBalancerHost LoadBalancerPort";
+  exit 1;
+fi
 
 # 获取当前文件夹
 SCRIPTPATH=`dirname "$0"`
@@ -23,4 +30,4 @@ UpgradeModule 1.3.1 com fasterxml classmate
 #   exit 1
 # fi
 
-execCLI initmaster.cli
+execCLI initmaster.cli LBHost $1 LBPort $2

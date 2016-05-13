@@ -8,9 +8,11 @@
 # address.modcluster 224.0.1.105
 # port.txn-recovery 4712
 # port.txn-status 4713
+# LBHost
+# LBPort
 
 cd /socket-binding-group=full-ha-sockets
-/remote-destination-outbound-socket-binding=apache:add(host=10.24.145.73,port=6666)
+/remote-destination-outbound-socket-binding=apache:add(host=${LBHost},port=${LBPort})
 /socket-binding=jgroups-tcp:write-attribute(name=interface,value=management)
 
 #/socket-binding-group=-cluster-sockets:remove
