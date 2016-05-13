@@ -18,7 +18,7 @@ SCRIPTPATH=`exec 2>/dev/null;(cd -- "$mypath") && cd -- "$mypath"|| cd "$mypath"
 . $SCRIPTPATH/core.sh
 . $SCRIPTPATH/modulemvncore.sh
 
-. $SCRIPTPATH/jdbcmodule.sh
+. $SCRIPTPATH/modulejdbc.sh
 
 UpgradeModule 2.7.4 com fasterxml jackson core jackson-databind
 UpgradeModule 2.7.4 com fasterxml jackson core jackson-core
