@@ -15,7 +15,7 @@ if [ $UID -ne 0 ]; then
 fi
 
 # 安装一些必要的软件
-yum -y install net-tools ntp redis memcached httpd
+yum -y install net-tools ntp redis memcached httpd gcc autoconf lvm2
 
 systemctl enable ntpd
 systemctl enable redis
@@ -66,4 +66,5 @@ cp /root/setup/jdbc/*.jar ${CATALINA_HOME}/lib
 cp /root/setup/httpd/*.so /etc/httpd/modules/
 cp /root/setup/httpd/*.conf /etc/httpd/conf.modules.d/
 cp /root/setup/httpd/*.properties /etc/httpd/conf/
+# . addprojectmanager.sh
 service httpd configtest
