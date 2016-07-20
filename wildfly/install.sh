@@ -7,7 +7,7 @@ if [ $UID -ne 0 ]; then
     exit 1
 fi
 
-wget http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip
+wget http://resali.huobanplus.com/wildfly-10.0.0.Final.zip
 # 获取当前目录
 unzip wildfly-10.0.0.Final.zip
 rm wildfly-10.0.0.Final.zip
