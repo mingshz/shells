@@ -25,5 +25,7 @@ echo "export WILDFLY_HOME=$HOME" >> /etc/environment
 
 echo "it's very importment to true resolve-parameter-values in ${HOME}/bin/jboss-cli.xml"
 
-# 要制作一个启动的脚本呀，笨
-# 再制作 2个 用户专用 启动脚本 和cli脚本
+# TODO 要制作一个启动的脚本呀，笨
+# TODO 再制作 2个 用户专用 启动脚本 和cli脚本
+# TODO 开启acl之后 千万记得 加入权限 <user realm="ManagementRealm" name="CJ"/>
+# TODO 如果需要开启远程web管理  那么hosts 还需要加入使用public interface作为远程管理的接口
