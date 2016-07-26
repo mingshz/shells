@@ -15,7 +15,7 @@ if [ $UID -ne 0 ]; then
 fi
 
 # 安装一些必要的软件
-yum -y install net-tools ntp redis memcached httpd gcc autoconf lvm2
+yum -y install net-tools ntp redis memcached httpd gcc autoconf lvm2 firewalld wget
 
 systemctl enable ntpd
 systemctl enable redis
