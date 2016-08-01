@@ -27,26 +27,8 @@ echo $SCRIPTPATH
 
 TMP="$(mktemp -q -t "$(basename "$0").XXXXXXXX" 2>/dev/null || mktemp -q)"
 # 现在我们把脚本写到里面去
-echo "deploy $war --name=web.war --runtime-name=web.war  --force" > $TMP
+echo "deploy $war --name=cms-test.war --runtime-name=cms-test.war  --force" > $TMP
 # cat $TMP
-execCLI $TMP "10.24.145.73:9990"
+execCLI $TMP "120.25.96.16:9990"
 rm $TMP
 
-#
-# if [[ ! $ApiOpenFancatCnAccount ]]; then
-#   echo "set ApiOpenFancatCnAccount first"
-#   exit 1
-# fi
-# if [[ ! $ApiOpenFancatCnPassword ]]; then
-#   echo "set ApiOpenFancatCnPassword first"
-#   exit 1
-# fi
-# # 如何输入密码？ 参考 http://www.stratigery.com/scripting.ftp.html
-# ftp -n api.open.fancat.cn <<EOF
-# quote USER $ApiOpenFancatCnAccount
-# quote PASS $ApiOpenFancatCnPassword
-# cd /JavaDevelopmentEnvironment/tomcat_dev/huobanplusapps/
-# bin
-# put $war ROOT.war
-# exit
-# EOF
