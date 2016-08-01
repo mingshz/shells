@@ -25,10 +25,9 @@ SCRIPTPATH=`exec 2>/dev/null;(cd -- "$mypath") && cd -- "$mypath"|| cd "$mypath"
 echo $SCRIPTPATH
 . $SCRIPTPATH/../wildfly/core.sh
 
-TMP="$(mktemp -q -t "$(basename "$0").XXXXXXXX" 2>/dev/null || mktemp -q)"
+CLITMP="$(mktemp -q -t "$(basename "$0").XXXXXXXX" 2>/dev/null || mktemp -q)"
 # 现在我们把脚本写到里面去
-echo "deploy $war --name=cms-test.war --runtime-name=cms-test.war  --force" > $TMP
+echo "deploy $war --name=cms-test.war --runtime-name=cms-test.war  --force" > $CLITMP
 # cat $TMP
-execCLI $TMP "120.25.96.16:9990"
-rm $TMP
-
+execCLI $CLITMP "120.25.96.16:9990"
+rm $CLITMP
