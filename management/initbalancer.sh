@@ -8,6 +8,6 @@ if [ $UID -ne 0 ]; then
 fi
 
 # 获取目录
-wget -O /root/balancer1.tar.gz http://resali.huobanplus.com/huobanplus/balancer1.tar.gz
+wget -O /root/balancer1.tar.gz http://resali.huobanplus.com/balancer1.tar.gz
 tar -C /var -xzf /root/balancer1.tar.gz
 ln -fs /var/balancer1/jk.conf /etc/httpd/conf.modules.d/jk.conf
