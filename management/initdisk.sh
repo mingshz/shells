@@ -101,3 +101,28 @@ echo "$DATAPATH $NewlyData    ext3    defaults     0 0" >> /etc/fstab
 mkswap $SWAPPATH
 echo "$SWAPPATH      swap     swap    defaults     0 0" >> /etc/fstab
 swapon -va
+
+#
+#  如何扩充一个逻辑盘（从物理盘） 
+#  首先使用fdisk格式化物理盘
+#  再使用lvm pvcreate 创建新的pv
+#  再使用vgextend 扩充vg  此时可以看到增加了free
+#  lvextend -l +100%FREE 目标LV
+#  完成之后使用resize2fs让系统在线加载
+#
+#  案例中我们使用VG0，VG0DATA(LV) 新的物理盘是 /dev/vdc
+# fdisk /dev/vdc<<EOF
+# n
+# p
+# 1
+#
+#
+# t
+# 8e
+# w
+# EOF
+# lvm pvcreate /dev/vdc1
+# lvm vgextend VG0 /dev/vdc1
+# lvm vgdisplay(确认是否增加了free)
+# lvm lvextend -l +100%FREE /dev/VG0/VG0DATA
+# resize2fs /dev/VG0/VG0DATA
