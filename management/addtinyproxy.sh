@@ -12,6 +12,7 @@ fi
 yum install -y tinyproxy
 # 更改配置文件
 ConfigFile=/etc/tinyproxy/tinyproxy.conf
+# ConfigFile=~/tinyproxy.conf
 Port=$1
 if [[ ! $Port ]]; then
   Port='55555'
@@ -26,7 +27,8 @@ if [[ ! $AllowList ]]; then
   sed -i -e "s@^Allow .*@#Allow 127.0.0.1@g" $ConfigFile
 else
   # 更改Allow
-  sed -i -e "s@.*Allow .*@Allow ${AllowList}@g" $ConfigFile
+  sed -i -e "s@^Allow .*@Allow ${AllowList}@g"\
+-e "s@^#Allow .*@Allow ${AllowList}@g" $ConfigFile
 fi
 
 # cat $ConfigFile
