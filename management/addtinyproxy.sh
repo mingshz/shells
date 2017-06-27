@@ -34,3 +34,6 @@ fi
 # cat $ConfigFile
 systemctl enable tinyproxy
 systemctl start tinyproxy
+# 同时应当信任 所有的访问
+# firewall-cmd --add-rich-rule='rule family="ipv4" source address="10.46.121.157" accept'
+# firewall-cmd --add-rich-rule='rule family="ipv4" source address="120.76.42.134" accept'
