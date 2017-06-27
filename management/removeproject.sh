@@ -132,3 +132,31 @@ if [[ $DOIT == true ]]; then
 else
   echo $TCMD
 fi
+
+TCMD="systemctl disable tomcat_$NAME"
+if [[ $DOIT == true ]]; then
+  `$TCMD`
+else
+  echo $TCMD
+fi
+
+TCMD="systemctl stop tomcat_$NAME"
+if [[ $DOIT == true ]]; then
+  `$TCMD`
+else
+  echo $TCMD
+fi
+
+TCMD="rm /etc/systemd/system/tomcat_$NAME.service"
+if [[ $DOIT == true ]]; then
+  `$TCMD`
+else
+  echo $TCMD
+fi
+
+TCMD="rm /etc/sudoers.d/${NAME}"
+if [[ $DOIT == true ]]; then
+  `$TCMD`
+else
+  echo $TCMD
+fi

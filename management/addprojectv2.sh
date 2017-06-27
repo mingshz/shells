@@ -20,13 +20,13 @@ if [[ ! ${HB_CATALINA_BASE_TAR} ]]; then
   HB_CATALINA_BASE_TAR=/usr/share/tomcat_base.tar.gz
 fi
 
-# if [[ ! ${JAVA_HOME} ]]; then
-#   JAVA_HOME=/usr/java/jdk1.8.0_66
-# fi
+if [[ ! ${JAVA_HOME} ]]; then
+    JAVA_HOME=/usr/lib/jvm/java-1.8.0
+fi
 
 # 准备一个脚本文件
 function MakeTomcatScript(){
-  # $0 用户 $1 base
+  # $1 用户 $2 base
 
   # s/要替换的字符串/新的字符串/g
   #  / 可以用其他字符代替 比如# @
@@ -35,13 +35,14 @@ function MakeTomcatScript(){
   # ""
   # "s/\(address=\).*/\1$1/"
   # "s/\(JAVA_HOME=\"\).*\"/\1/g"
-  cp ${HB_CATALINA_HOME}/bin/tomcat.service /etc/systemd/system/tomcat_$0.service
+  cp ${HB_CATALINA_HOME}/bin/tomcat.service $2/tomcat.service
+  ln -s $2/tomcat.service /etc/systemd/system/tomcat_$1.service
 
-  sed -i -e "s@#{JAVA_HOME}@"${JAVA_HOME}"\"@g"\
- -e "s@#{CATALINA_BASE}@"$1"\"@g"\
- -e "s@#{CATALINA_HOME}@"${HB_CATALINA_HOME}"\"@g"\
- -e "s@#{TOMCAT_USER}@"$0"\"@g"\
- /etc/systemd/system/tomcat_$0.service
+  sed -i -e "s@#{JAVA_HOME}@"${JAVA_HOME}"@g"\
+ -e "s@#{CATALINA_BASE}@"$2"@g"\
+ -e "s@#{CATALINA_HOME}@"${HB_CATALINA_HOME}"@g"\
+ -e "s@#{TOMCAT_USER}@"$1"@g"\
+ $2/tomcat.service
 
  systemctl daemon-reload
 }
@@ -144,6 +145,13 @@ sed -i -e "s@\(port=\"\)[0-9]\+\(\"[ ]\+protocol=\"HTTP\)@\1$PORT\2@g" ${NEWHOME
 # 制作服务单元 /etc/systemd/system/tomcat_${NAME}.service
 MakeTomcatScript ${NAME} ${NEWHOME}/tomcat
 
+# 给予组管理权
+echo "" > /etc/sudoers.d/${NAME}
+echo "%${NAME} ALL= NOPASSWD: /bin/systemctl start tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
+echo "%${NAME} ALL= NOPASSWD: /bin/systemctl stop tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
+echo "%${NAME} ALL= NOPASSWD: /bin/systemctl enable tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
+echo "%${NAME} ALL= NOPASSWD: /bin/systemctl disable tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
+
 chown -R ${NAME}:${NAME} ${NEWHOME}
 # ACL控制
 setfacl -m group:${NAME}:rwx ${NEWHOME}
@@ -181,7 +189,8 @@ if [[ $ResourceCreated == true ]]; then
   echo "  Resource HOME:${ResourceHome}${NAME}" >> ${NEWHOME}/README
 fi
 echo "" >> ${NEWHOME}/README
-echo "${NEWHOME}/startTomcat to start instance" >> ${NEWHOME}/README
-echo "${NEWHOME}/stopTomcat to stop instance" >> ${NEWHOME}/README
+echo "systemctl start tomcat_${NAME} ; to start instance" >> ${NEWHOME}/README
+echo "systemctl stop tomcat_${NAME} ; to stop instance" >> ${NEWHOME}/README
+echo "man systemctl for more." >> ${NEWHOME}/README
 
 cat ${NEWHOME}/README
