@@ -15,7 +15,8 @@ if [ $UID -ne 0 ]; then
 fi
 
 # 安装一些必要的软件
-yum -y install net-tools ntp redis memcached httpd gcc autoconf lvm2 firewalld wget device-mapper
+# 移除  gcc autoconf  httpd 暂时还支持，可以手动切换为nginx
+yum -y install net-tools ntp redis memcached httpd lvm2 firewalld wget device-mapper java-1.8.0-openjdk
 
 systemctl enable ntpd
 systemctl enable redis
@@ -27,27 +28,28 @@ systemctl start firewalld
 # 将http端口开放
 firewall-cmd --add-service=http --permanent
 
-# 获取我们精心准备的发布包
+# 获取我们精心准备的发布包 2.0的版本了
 if [[ ! -e /root/setup.tar.gz ]]; then
-  wget -O /root/setup.tar.gz http://resali.huobanplus.com/setup.tar.gz
+  wget -O /root/setup.tar.gz http://resali.huobanplus.com/setup.2.tar.gz
 fi
 
 tar -C /root -xzf /root/setup.tar.gz
 # install
 
-rpm -ivh /root/setup/install/*.rpm
-# 安装完毕提取Java目录到环境中
-RPMJDK=`rpm -qa | grep jdk`
-if [[ ! $RPMJDK ]]; then
-  echo "Failed to install jdk."
-  exit 1
-fi
-JavaHome=`rpm -ql $RPMJDK | grep jdk | head -n1`
-if [[ ! $JavaHome ]]; then
-  echo "Failed to get install dir of JDK."
-  exit 1
-fi
-echo "export JAVA_HOME=$JavaHome" >> /etc/environment
+# 不再使用甲骨文的
+#rpm -ivh /root/setup/install/*.rpm
+## 安装完毕提取Java目录到环境中
+#RPMJDK=`rpm -qa | grep jdk`
+#if [[ ! $RPMJDK ]]; then
+#  echo "Failed to install jdk."
+#  exit 1
+#fi
+#JavaHome=`rpm -ql $RPMJDK | grep jdk | head -n1`
+#if [[ ! $JavaHome ]]; then
+#  echo "Failed to get install dir of JDK."
+#  exit 1
+#fi
+echo "export JAVA_HOME=/usr/lib/jvm/java-1.8.0" >> /etc/environment
 # apache tomcat 寻找tomcat安装包
 GZTomcat=`ls /root/setup/install/apache-tomcat*`
 tar -C /usr -xzf $GZTomcat
