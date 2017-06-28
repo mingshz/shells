@@ -129,7 +129,7 @@ fi
 
 # 新增用户
 useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NAME} Account" ${NAME}
-chmod g+rw ${NEWHOME}
+chmod -R g+rw ${NEWHOME}
 
 # 解压缩 并且更名
 tar zxvf ${HB_CATALINA_BASE_TAR} -C ${NEWHOME}
