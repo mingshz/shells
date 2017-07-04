@@ -26,8 +26,8 @@ fi
 
 # 准备一个脚本文件
 function MakeTomcatScript(){
-  # $1 用户 $2 base
-
+  # $1 用户 $2 home
+  T_Base=$2/tomcat
   # s/要替换的字符串/新的字符串/g
   #  / 可以用其他字符代替 比如# @
   # https://www.gnu.org/software/sed/manual/html_node/Regular-Expressions.html
@@ -35,14 +35,15 @@ function MakeTomcatScript(){
   # ""
   # "s/\(address=\).*/\1$1/"
   # "s/\(JAVA_HOME=\"\).*\"/\1/g"
-  cp ${HB_CATALINA_HOME}/bin/tomcat.service $2/tomcat.service
-  ln -s $2/tomcat.service /etc/systemd/system/tomcat_$1.service
+  cp ${HB_CATALINA_HOME}/bin/tomcat.service ${T_Base}/tomcat_$1.service
+  ln -s ${T_Base}/tomcat_$1.service /etc/systemd/system/tomcat_$1.service
 
   sed -i -e "s@#{JAVA_HOME}@"${JAVA_HOME}"@g"\
- -e "s@#{CATALINA_BASE}@"$2"@g"\
+ -e "s@#{CATALINA_BASE}@"${T_Base}"@g"\
  -e "s@#{CATALINA_HOME}@"${HB_CATALINA_HOME}"@g"\
  -e "s@#{TOMCAT_USER}@"$1"@g"\
- $2/tomcat.service
+ -e "s@#{CWD}@"$2"@g"\
+ ${T_Base}/tomcat_$1.service
 
  systemctl daemon-reload
 }
@@ -143,7 +144,7 @@ sed -i -e "s@\(port=\"\)[0-9]\+\(\"[ ]\+protocol=\"HTTP\)@\1$PORT\2@g" ${NEWHOME
 # 制作启动脚本 和后台运行脚本 需要了解如何将伪装一个其他用户的权限
 # http://unix.stackexchange.com/questions/364/allow-setuid-on-shell-scripts
 # 制作服务单元 /etc/systemd/system/tomcat_${NAME}.service
-MakeTomcatScript ${NAME} ${NEWHOME}/tomcat
+MakeTomcatScript ${NAME} ${NEWHOME}
 
 # 给予组管理权
 echo "" > /etc/sudoers.d/${NAME}
