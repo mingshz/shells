@@ -43,3 +43,4 @@ chmod +r ${Tomcat_home}/conf/Catalina/localhost/context.xml.default
 chown CJ:CJ ${Tomcat_home}/conf/Catalina/localhost/context.xml.default
 echo "${ScriptHome}/../gethuobanplus.sh <version>"
 echo '可以获取最新版本WAR'
+echo "尚需执行的步骤还有，CDN资源迁移，server.xml编辑(AJP) 以及balancer编辑"
