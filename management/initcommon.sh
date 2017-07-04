@@ -14,6 +14,14 @@ if [ $UID -ne 0 ]; then
     exit 1
 fi
 
+if [[ ! $1 ]]; then
+  echo "$0 hostname"
+  exit 1
+fi
+
+# 设置主机名称
+hostnamectl --static --transient --pretty set-hostname $1
+
 # 安装一些必要的软件
 # 移除  gcc autoconf  httpd 暂时还支持，可以手动切换为nginx
 yum -y install net-tools ntp redis memcached httpd lvm2 firewalld wget device-mapper java-1.8.0-openjdk
@@ -49,13 +57,16 @@ tar -C /root -xzf /root/setup.tar.gz
 #  echo "Failed to get install dir of JDK."
 #  exit 1
 #fi
-echo "export JAVA_HOME=/usr/lib/jvm/java-1.8.0" >> /etc/environment
+echo "export JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk" >> /etc/environment
 # apache tomcat 寻找tomcat安装包
 GZTomcat=`ls /root/setup/install/apache-tomcat*`
 tar -C /usr -xzf $GZTomcat
 
 CATALINA_HOME=`ls /usr/apache-tomcat* -d`
 echo "export HB_CATALINA_HOME=${CATALINA_HOME}" >> /etc/environment
+
+chown -R root:root ${CATALINA_HOME}
+chmod +x ${CATALINA_HOME}/bin/*.sh
 
 # tomcat base 空压缩包
 cp /root/setup/install/tomcat_base.tar.gz ${CATALINA_HOME}/

@@ -35,15 +35,14 @@ function MakeTomcatScript(){
   # ""
   # "s/\(address=\).*/\1$1/"
   # "s/\(JAVA_HOME=\"\).*\"/\1/g"
-  cp ${HB_CATALINA_HOME}/bin/tomcat.service ${T_Base}/tomcat_$1.service
-  ln -s ${T_Base}/tomcat_$1.service /etc/systemd/system/tomcat_$1.service
+  cp ${HB_CATALINA_HOME}/bin/tomcat.service /etc/systemd/system/tomcat_$1.service
 
   sed -i -e "s@#{JAVA_HOME}@"${JAVA_HOME}"@g"\
  -e "s@#{CATALINA_BASE}@"${T_Base}"@g"\
  -e "s@#{CATALINA_HOME}@"${HB_CATALINA_HOME}"@g"\
  -e "s@#{TOMCAT_USER}@"$1"@g"\
  -e "s@#{CWD}@"$2"@g"\
- ${T_Base}/tomcat_$1.service
+ /etc/systemd/system/tomcat_$1.service
 
  systemctl daemon-reload
 }
