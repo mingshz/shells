@@ -151,6 +151,7 @@ echo "%${NAME} ALL= NOPASSWD: /bin/systemctl start tomcat_${NAME}" >> /etc/sudoe
 echo "%${NAME} ALL= NOPASSWD: /bin/systemctl stop tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
 echo "%${NAME} ALL= NOPASSWD: /bin/systemctl enable tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
 echo "%${NAME} ALL= NOPASSWD: /bin/systemctl disable tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
+echo "%${NAME} ALL= NOPASSWD: /usr/bin/cp ROOT.war ${NEWHOME}/tomcat/webapps/ROOT.war" >> /etc/sudoers.d/${NAME}
 
 chown -R ${NAME}:${NAME} ${NEWHOME}
 # ACL控制
@@ -189,8 +190,8 @@ if [[ $ResourceCreated == true ]]; then
   echo "  Resource HOME:${ResourceHome}${NAME}" >> ${NEWHOME}/README
 fi
 echo "" >> ${NEWHOME}/README
-echo "systemctl start tomcat_${NAME} ; to start instance" >> ${NEWHOME}/README
-echo "systemctl stop tomcat_${NAME} ; to stop instance" >> ${NEWHOME}/README
+echo "sudo systemctl start tomcat_${NAME} ; to start instance" >> ${NEWHOME}/README
+echo "sudo systemctl stop tomcat_${NAME} ; to stop instance" >> ${NEWHOME}/README
 echo "man systemctl for more." >> ${NEWHOME}/README
 
 cat ${NEWHOME}/README
