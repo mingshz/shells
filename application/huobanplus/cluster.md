@@ -5,6 +5,10 @@
 
 `firewall-cmd --reload
 `
+以及信任LB
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.18.119.56" accept'
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="112.74.139.48" accept'
+firewall-cmd --permanent --add-port=10000/tcp
 
 所有服务器都互相hosts所有集群的名字
 
@@ -21,7 +25,10 @@ c1_n?.domain
 允许操作IP 访问该port即可访问实例
 
 ### 开放资源访问用户
-
+usermod -s /bin/bash -d /home/huotu/home huotu
+mkdir /home/huotu/home
+chown huotu:huotu /home/huotu/home
+sudo -u huotu ssh-keygen
 ### 开放redis
 
 ## 使用支持集群的server和context
