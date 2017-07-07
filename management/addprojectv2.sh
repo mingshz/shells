@@ -67,7 +67,7 @@ shift
 PORT=$1
 
 
-NEWHOME=/run/${NAME}
+NEWHOME=/home/${NAME}
 
 # test script
 # MakeTomcatScript

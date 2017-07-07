@@ -16,6 +16,7 @@ tar -C /var -xzf ${ScriptHome}/apache-activemq-5.14.4-bin.tar.gz
 useradd -r activemq
 chown -R activemq:activemq /var/apache-activemq-5.14.4
 # ln -s /var/apache-activemq-5.14.4 /var/activemq
+usermod -d /var/apache-activemq-5.14.4 activemq
 
 # 修改运行配置
 cp /var/apache-activemq-5.14.4/bin/env /etc/default/activemq
