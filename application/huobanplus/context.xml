@@ -23,7 +23,7 @@
     <Parameter name="huotu.mall.resourcesUri" value="http://res.#{domain}"/>
     <Parameter name="huotu.mall.resourcesHome" value="/var/www/resources/nonono"/>
 
-    <Parameter name="mall.domain" value="efuton.com"/>
+    <Parameter name="mall.domain" value="#{domain}"/>
 
     <Parameter name="com.huotu.huobanplus.redis.database" value="2"/>
     <Parameter name="com.huotu.huobanplus.uri" value="http://api.open.#{domain}/"/>
