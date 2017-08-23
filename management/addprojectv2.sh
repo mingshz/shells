@@ -141,10 +141,10 @@ tar zxvf ${HB_CATALINA_BASE_TAR} -C ${NEWHOME}
 mv ${NEWHOME}/tomcat_home_template ${NEWHOME}/tomcat
 cp tomcat-server-normal.xml ${NEWHOME}/tomcat/conf/server.xml
 # 默认关闭ajp，并且修改http port为指定值
-PORT1=8000+${PORT}*6+1
-PORT2=8000+${PORT}*6+3
-PORT3=8000+${PORT}*6+4
-PORT4=8000+${PORT}*6+5
+PORT1=$[8000+${PORT}*6+1]
+PORT2=$[8000+${PORT}*6+3]
+PORT3=$[8000+${PORT}*6+4]
+PORT4=$[8000+${PORT}*6+5]
 
 sed -i -e "s@PORT_START@${PORT1}@g" ${NEWHOME}/tomcat/conf/server.xml
 sed -i -e "s@PORT_HTTPS@${PORT3}@g" ${NEWHOME}/tomcat/conf/server.xml
