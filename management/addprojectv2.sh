@@ -162,6 +162,7 @@ echo "%${NAME} ALL= NOPASSWD: /bin/systemctl start tomcat_${NAME}" >> /etc/sudoe
 echo "%${NAME} ALL= NOPASSWD: /bin/systemctl stop tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
 echo "%${NAME} ALL= NOPASSWD: /bin/systemctl enable tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
 echo "%${NAME} ALL= NOPASSWD: /bin/systemctl disable tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
+echo "%${NAME} ALL= NOPASSWD: /bin/systemctl restart tomcat_${NAME}" >> /etc/sudoers.d/${NAME}
 echo "%${NAME} ALL= NOPASSWD: /usr/bin/cp ROOT.war ${NEWHOME}/tomcat/webapps/ROOT.war" >> /etc/sudoers.d/${NAME}
 
 chown -R ${NAME}:${NAME} ${NEWHOME}
