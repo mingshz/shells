@@ -1,0 +1,59 @@
+sudo ./addprojectv2.sh huotu 8003
+sudo ./addprojectv2.sh supplier 8009
+sudo ./addprojectv2.sh erp 8015
+sudo ./addprojectv2.sh mallutils 8021
+sudo ./addprojectv2.sh dianzhu 8027
+
+sudo systemctl start tomcat_huotu
+sudo systemctl enable tomcat_huotu
+
+sudo systemctl start tomcat_supplier
+sudo systemctl enable tomcat_supplier
+sudo systemctl start tomcat_erp
+sudo systemctl enable tomcat_erp
+sudo systemctl start tomcat_mallutils
+sudo systemctl enable tomcat_mallutils
+
+sudo systemctl start tomcat_dianzhu
+sudo systemctl enable tomcat_dianzhu
+
+sudo chmod -R g+rw /home/huotu/tomcat
+sudo chmod -R g+rw /home/supplier/tomcat
+sudo chmod -R g+rw /home/erp/tomcat
+sudo chmod -R g+rw /home/mallutils/tomcat
+sudo chmod -R g+rw /home/dianzhu/tomcat
+
+sudo mkdir /data1/projects
+
+sudo systemctl stop tomcat_huotu
+sudo mv /home/huotu /data1/projects/
+sudo ln -s /data1/projects/huotu /home/huotu
+
+sudo systemctl stop tomcat_supplier
+sudo mv /home/supplier /data1/projects/
+sudo ln -s /data1/projects/supplier /home/supplier
+
+sudo systemctl stop tomcat_erp
+sudo mv /home/erp /data1/projects/
+sudo ln -s /data1/projects/erp /home/erp
+
+sudo systemctl stop tomcat_mallutils
+sudo mv /home/mallutils /data1/projects/
+sudo ln -s /data1/projects/mallutils /home/mallutils
+
+sudo systemctl stop tomcat_dianzhu
+sudo mv /home/dianzhu /data1/projects/
+sudo ln -s /data1/projects/dianzhu /home/dianzhu
+
+sudo useradd lgh
+sudo useradd allan
+sudo /var/shells/management/addprojectmanager.sh supplier allan
+sudo /var/shells/management/addprojectmanager.sh erp allan
+sudo /var/shells/management/addprojectmanager.sh mallutils allan
+sudo /var/shells/management/addprojectmanager.sh dianzhu lgh
+
+sudo passwd lgh
+sudo passwd allan
+
+sudo chage -d0 lgh
+sudo chage -d0 allan

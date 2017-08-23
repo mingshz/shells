@@ -5,6 +5,11 @@
 # 然后会把相关tomcat实例复制一份到run目录,还会将rw权限开放给group
 # 接着会修改配置文件中的端口号，使其匹配到参数指定的端口号
 # addproject --dev <name> <port>
+# addprojectv2 --dev <name> <port_offset>
+# 会从8000开始  即 8001 8003(http) 8004(https) 8005(ajp) 8006留置
+# 8000+offset*6+TYPE
+# 1:start 3:http 4:https 5:ajp
+
 # 所有环境中应该指定一个值  指向一个压缩好的 tomcat 实例
 # 以及一个tomcat home
 # HB_CATALINA_HOME
@@ -74,20 +79,20 @@ NEWHOME=/home/${NAME}
 # exit 0
 
 if [[ ! $NAME ]]; then
-  echo "$0 --dev [name] [port] or $0 [name] [port]"
+  echo "$0 --dev [name] [port_offset] or $0 [name] [port_offset]"
   exit 1
 fi
 
 if [[ ! $PORT ]]; then
-  echo "$0 --dev [name] [port] or $0 [name] [port]"
+  echo "$0 --dev [name] [port_offset] or $0 [name] [port_offset]"
   exit 1
 fi
 
-if [ $DEV == 1 -a $PORT -lt 10000 ]
-then
-  echo "the port($PORT) must great than 10000";
-  exit 1;
-fi
+#if [ $DEV == 1 -a $PORT -lt 10000 ]
+#then
+#  echo "the port($PORT) must great than 10000";
+#  exit 1;
+#fi
 
 # echo $NAME $PORT $DEV ${HB_CATALINA_HOME} ${HB_CATALINA_BASE_TAR} ${NEWHOME}
 
@@ -134,11 +139,17 @@ chmod -R g+rw ${NEWHOME}
 # 解压缩 并且更名
 tar zxvf ${HB_CATALINA_BASE_TAR} -C ${NEWHOME}
 mv ${NEWHOME}/tomcat_home_template ${NEWHOME}/tomcat
-
+cp tomcat-server-normal.xml ${NEWHOME}/tomcat/conf/server.xml
 # 默认关闭ajp，并且修改http port为指定值
-sed -i -e "s@<Connector[ ]\+port=\"[0-9]\+\"[ ]\+protocol=\"AJP.*@"'<!-- Disable AJP port -->'"@g" ${NEWHOME}/tomcat/conf/server.xml
-sed -i -e "s@\(port=\"\)[0-9]\+\(\"[ ]\+protocol=\"HTTP\)@\1$PORT\2@g" ${NEWHOME}/tomcat/conf/server.xml
-# port="8006" shutdown="SHUTDOWN  这个有必要改么？
+PORT1=8000+${PORT}*6+1
+PORT2=8000+${PORT}*6+3
+PORT3=8000+${PORT}*6+4
+PORT4=8000+${PORT}*6+5
+
+sed -i -e "s@PORT_START@${PORT1}@g" ${NEWHOME}/tomcat/conf/server.xml
+sed -i -e "s@PORT_HTTPS@${PORT3}@g" ${NEWHOME}/tomcat/conf/server.xml
+sed -i -e "s@PORT_HTTP@${PORT2}@g" ${NEWHOME}/tomcat/conf/server.xml
+sed -i -e "s@PORT_AJP@${PORT4}@g" ${NEWHOME}/tomcat/conf/server.xml
 
 # 制作启动脚本 和后台运行脚本 需要了解如何将伪装一个其他用户的权限
 # http://unix.stackexchange.com/questions/364/allow-setuid-on-shell-scripts
