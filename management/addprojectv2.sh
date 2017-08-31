@@ -127,14 +127,18 @@ then
   exit 1
 fi
 
-# 如果存在/data1/projects 则创建在 /data1/projects/name_home
-# 并且ln -s /data1/projects/name_home/tomcat ./tomcat
-# 还有就是关于连接的。。
-# 建立服务
-
 # 新增用户
 useradd -mr -d ${NEWHOME} -s /sbin/nologin -c "Project ${NAME} Account" ${NAME}
 chmod -R g+rw ${NEWHOME}
+
+# 如果存在/data1/projects 则创建在 /data1/projects/name_home
+if [ -e /data1 ]; then
+    if [ ! -e /data1/projects ]; then
+        mkdir /data1/projects
+    fi
+    mv ${NEWHOME} /data1/projects/${NAME}
+    ln -s /data1/projects/${NAME} ${NEWHOME}
+fi
 
 # 解压缩 并且更名
 tar zxvf ${HB_CATALINA_BASE_TAR} -C ${NEWHOME}
@@ -170,6 +174,12 @@ chown -R ${NAME}:${NAME} ${NEWHOME}
 setfacl -m group:${NAME}:rwx ${NEWHOME}
 # if [[ ${DEV} -eq 1 ]]; then
 # fi
+
+#
+systemctl start tomcat_${NAME}
+systemctl enable tomcat_${NAME}
+
+chmod -R g+rw ${NEWHOME}/tomcat
 
 # 将需要管理这个开发程序的人 加入到该组
 AddProjectManager $NAME CJ

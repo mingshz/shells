@@ -1,12 +1,12 @@
-sudo ./addprojectv2.sh huotu 8003
-sudo ./addprojectv2.sh supplier 8009
-sudo ./addprojectv2.sh erp 8015
-sudo ./addprojectv2.sh mallutils 8021
-sudo ./addprojectv2.sh dianzhu 8027
+sudo ./addprojectv2.sh huotu 0
+sudo ./addprojectv2.sh supplier 1
+sudo ./addprojectv2.sh erp 2
+sudo ./addprojectv2.sh mallutils 3
+sudo ./addprojectv2.sh dianzhu 4
+
 
 sudo systemctl start tomcat_huotu
 sudo systemctl enable tomcat_huotu
-
 sudo systemctl start tomcat_supplier
 sudo systemctl enable tomcat_supplier
 sudo systemctl start tomcat_erp
@@ -47,13 +47,22 @@ sudo ln -s /data1/projects/dianzhu /home/dianzhu
 
 sudo useradd lgh
 sudo useradd allan
+sudo useradd helloztt
+
 sudo /var/shells/management/addprojectmanager.sh supplier allan
 sudo /var/shells/management/addprojectmanager.sh erp allan
 sudo /var/shells/management/addprojectmanager.sh mallutils allan
+sudo /var/shells/management/addprojectmanager.sh supplier helloztt
+sudo /var/shells/management/addprojectmanager.sh erp helloztt
+sudo /var/shells/management/addprojectmanager.sh mallutils helloztt
 sudo /var/shells/management/addprojectmanager.sh dianzhu lgh
 
 sudo passwd lgh
 sudo passwd allan
 
+sudo usermod -aG wheel helloztt
+
 sudo chage -d0 lgh
 sudo chage -d0 allan
+sudo chage -d0 helloztt
+
