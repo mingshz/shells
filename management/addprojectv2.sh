@@ -170,7 +170,7 @@ echo "%${NAME} ALL= NOPASSWD: /bin/systemctl restart tomcat_${NAME}" >> /etc/sud
 echo "%${NAME} ALL= NOPASSWD: /usr/bin/cp ROOT.war ${NEWHOME}/tomcat/webapps/ROOT.war" >> /etc/sudoers.d/${NAME}
 
 chown -R ${NAME}:${NAME} ${NEWHOME}
-chown -R /data1/projects/${NAME}
+chown -R ${NAME}:${NAME} /data1/projects/${NAME}
 # ACL控制
 setfacl -m group:${NAME}:rwx ${NEWHOME}
 # if [[ ${DEV} -eq 1 ]]; then
