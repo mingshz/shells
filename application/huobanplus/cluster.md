@@ -6,8 +6,9 @@
 `firewall-cmd --reload
 `
 以及信任LB
-firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.16.231.39" accept'
-firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.16.231.41" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.18.255.142" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.18.255.141" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.18.255.139" accept'
 sudo firewall-cmd --permanent --add-port=8003/tcp
 sudo firewall-cmd --permanent --add-port=8009/tcp
 sudo firewall-cmd --permanent --add-port=8015/tcp
@@ -31,14 +32,19 @@ c1_n?.domain
 允许操作IP 访问该port即可访问实例
 
 ### 开放资源访问用户
-usermod -s /bin/bash -d /home/huotu/home huotu
-mkdir /home/huotu/home
-chown huotu:huotu /home/huotu/home
+sudo systemctl stop tomcat_huotu
+sudo usermod -s /bin/bash -d /home/huotu/home huotu
+sudo mkdir /home/huotu/home
+sudo chown huotu:huotu /home/huotu/home
 sudo -u huotu ssh-keygen
+sudo cat /home/huotu/home/.ssh/id_rsa.pub
 
 #### 授权
 sudo cat /home/huotu/home/.ssh/id_rsa.pub
+
 sudo vim /home/huotu/home/.ssh/authorized_keys
+sudo chown huotu:huotu /home/huotu/home/.ssh/authorized_keys
+sudo chmod +r /home/huotu/home/.ssh/authorized_keys
 #### 测试
 sudo -u huotu sftp node1.d
 ### 开放redis
