@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+    <Parameter name="spring.profiles.active" value="prod,container,cluster"/>
+
+    <!--http://activemq.apache.org/configuring-transports.html-->
+    <Resource name="jms/ConnectionFactory" auth="Container" type="org.apache.activemq.ActiveMQConnectionFactory"
+              description="JMS Connection Factory"
+              factory="org.apache.activemq.jndi.JNDIReferenceFactory"
+              brokerURL="nio://c1.#{domain}:61616"
+              useEmbeddedBroker="false"
+              brokerName="LocalActiveMQBroker"/>
+
+    <Resource name="jms/huobanplusPiwikJpa" auth="Container" type="org.apache.activemq.command.ActiveMQTopic"
+              description="my Topic"
+              factory="org.apache.activemq.jndi.JNDIReferenceFactory" physicalName="huobanplusPiwikJpa"/>
+    <Resource name="jms/huobanplusJpa" auth="Container" type="org.apache.activemq.command.ActiveMQTopic"
+              description="my Topic"
+              factory="org.apache.activemq.jndi.JNDIReferenceFactory" physicalName="huobanplusJpa"/>
+
+    <ResourceLink name="jdbc/Huobanplus"
+                  global="jdbc/MallMSData"
+                  type="javax.sql.DataSource"/>
+
+    <Resource name="jdbc/Piwik"
+              type="javax.sql.DataSource"
+              username=""
+              password=""
+              driverClassName="org.h2.Driver"
+              url="jdbc:h2:mem:piwik;DB_CLOSE_DELAY=-1"
+              maxTotal="8"
+              maxIdle="4"/>
+
+    <Parameter name="log4j.org.apache.commons.vfs2" value="warn"/>
+
+    <Parameter name="huotu.resourcesHome" value="sftp://c1.#{domain}/data1/cdn/huobanplus"/>
+    <Parameter name="huotu.resourcesUri" value="http://cdn1.#{domain}/huobanplus"/>
+
+    <Parameter name="huotu.mall.resourcesUri" value="http://res.#{domain}"/>
+    <Parameter name="huotu.mall.resourcesHome" value="/var/www/resources/nonono"/>
+
+    <Parameter name="mall.domain" value="#{domain}"/>
+
+    <Parameter name="com.huotu.huobanplus.redis.database" value="2"/>
+    <Parameter name="com.huotu.huobanplus.redis.host" value="c1.#{domain}"/>
+
+    <Parameter name="com.huotu.huobanplus.uri" value="http://api.open.#{domain}/"/>
+
+    <Parameter name="com.huotu.huobanplus.cs.easemob.organ.name" value="HotTech"/>
+    <Parameter name="com.huotu.huobanplus.cs.easemob.organ.login" value="jiangcai@huobanplus.com"/>
+    <Parameter name="com.huotu.huobanplus.cs.easemob.organ.password" value="A123456"/>
+    <Parameter name="com.huotu.huobanplus.cs.easemob.organ.price" value="125"/>
+
+    <Parameter name="com.huotu.huobanplus.settlement.ips.price" value="20000"/>
+
+</Context>
