@@ -6,16 +6,19 @@
 `firewall-cmd --reload
 `
 以及信任LB
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.18.255.142" accept'
-sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.18.255.141" accept'
+sudo firewall-cmd --add-rich-rule='rule family="ipv4" source address="112.16.89.50" accept'
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="10.25.87.146" accept'
 sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="172.18.255.139" accept'
 sudo firewall-cmd --permanent --add-port=8003/tcp
 sudo firewall-cmd --permanent --add-port=8009/tcp
 sudo firewall-cmd --permanent --add-port=8015/tcp
 sudo firewall-cmd --permanent --add-port=8021/tcp
 sudo firewall-cmd --permanent --add-port=8027/tcp
+sudo firewall-cmd --permanent --add-port=8033/tcp
+sudo firewall-cmd --permanent --add-port=8039/tcp
 
-所有服务器都互相hosts所有集群的名字
+
+所有服务器都互相hosts所有集群节点的名字
 
 
 ## 设定其中一台为中心服务器
