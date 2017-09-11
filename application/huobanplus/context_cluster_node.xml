@@ -33,7 +33,7 @@
 
     <Parameter name="log4j.org.apache.commons.vfs2" value="warn"/>
 
-    <Parameter name="huotu.resourcesHome" value="sftp://c1.#{domain}/data1/cdn/huobanplus"/>
+    <Parameter name="huotu.resourcesHome" value="sftp://huotu@c1.#{domain}/data1/cdn/huobanplus"/>
     <Parameter name="huotu.resourcesUri" value="http://cdn1.#{domain}/huobanplus"/>
 
     <Parameter name="huotu.mall.resourcesUri" value="http://res.#{domain}"/>

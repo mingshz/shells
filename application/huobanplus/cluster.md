@@ -32,7 +32,10 @@ c1_n?.domain
 
 还需要将相关的jar复制给tomcat
 
-允许操作IP 访问该port即可访问实例
+### 开放redis
+sudo vim /etc/redis.conf
+sudo systemctl restart redis
+sudo systemctl status redis
 
 ### 开放资源访问用户
 sudo systemctl stop tomcat_huotu
@@ -42,18 +45,15 @@ sudo chown huotu:huotu /home/huotu/home
 sudo -u huotu ssh-keygen
 sudo cat /home/huotu/home/.ssh/id_rsa.pub
 
-#### 授权
+##### 授权
 sudo cat /home/huotu/home/.ssh/id_rsa.pub
 
 sudo vim /home/huotu/home/.ssh/authorized_keys
 sudo chown huotu:huotu /home/huotu/home/.ssh/authorized_keys
 sudo chmod +r /home/huotu/home/.ssh/authorized_keys
-#### 测试
+##### 测试
 sudo -u huotu sftp node1.d
-### 开放redis
-sudo vim /etc/redis.conf
-sudo systemctl restart redis
-sudo systemctl status redis
+
 ## 使用支持集群的server和context
 
 
