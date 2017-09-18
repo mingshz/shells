@@ -35,7 +35,7 @@
 
     <Parameter name="com.huotu.huobanplus.settlement.ips.price" value="20000"/>
 
-    <!--<Parameter name="com.huotu.huobanplus.cs.openim.organ.price" value="100"/>-->
+    <Parameter name="com.huotu.huobanplus.cs.openim.organ.price" value="1500"/>
     <!--<Parameter name="com.huotu.huobanplus.cs.openim.proxy.uri" value="yunwang.efuton.com"/>-->
 
 </Context>

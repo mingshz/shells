@@ -47,12 +47,12 @@
         <Resource name="jdbc/MallMSData"
                   auth="Container"
                   type="javax.sql.DataSource"
-                  username="sa"
-                  password="jbh@Hellog@)"
-                  driverClassName="net.sourceforge.jtds.jdbc.Driver"
-                  url="jdbc:jtds:sqlserver://10.23.139.81;DatabaseName=hotpdmall"
+                  username="hotoutfit"
+                  password="ofh8201v_sgo"
+                  driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+                  url="jdbc:sqlserver://rm-wz9n4v4x9sy308973.sqlserver.rds.aliyuncs.com:3433;databaseName=hotpdmall;socketTimeout=30;lockTimeout=30;"
                   validationQuery="select 1"
-                  maxTotal="100"
+                  maxTotal="30"
                   maxIdle="4"/>
     </GlobalNamingResources>
 

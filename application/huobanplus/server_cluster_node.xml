@@ -55,7 +55,7 @@
                   maxTotal="30"
                   maxIdle="4"/>
 
-        <Resource name="jdbc/MallMSData"
+        <Resource name="jdbc/MallMSDataJtds"
                   auth="Container"
                   type="javax.sql.DataSource"
                   username="sa"

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+	<Parameter name="huotu.resourcesHome" value="/data1/cdn/hotsupplier"/>
+	<Parameter name="huotu.resourcesUri" value="http://cdn1.#{domain}/hotsupplier"/>
+	<Parameter name="log4j.org.eclipse.persistence.logging" value="info"/>
+
+	<Parameter name="spring.profiles.active" value="prod,container"
+						 override="true"/>
+
+	<Parameter name="erp.host" value="http://erpservice.#{domain}"/>
+	<Parameter name="huobanmall.pushUrl" value="http://mallapi.#{domain}"/>
+	<Parameter name="huobanmall.resourceUrl" value="http://res.#{domain}"/>
+	<Parameter name="cookie.domain" value=".#{domain}"/>
+
+        <Parameter name="huobanplus.pushUrl" value="http://api.open.#{domain}/"/>
+
+	<ResourceLink name="jdbc/hotsupplier"
+            global="jdbc/supplier"
+            type="javax.sql.DataSource"/>
+	<ResourceLink name="jdbc/huobanplus_supplier"
+            global="jdbc/MallMSData"
+            type="javax.sql.DataSource"/>
+
+</Context>
