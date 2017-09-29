@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# 这个脚本是建立一个名为helloztt的用户，并且给予它最高权限
+# 并设置CJ@蒋才的Mac可以直接登录
+useradd helloztt
+usermod -aG wheel helloztt
+mkdir /home/helloztt/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDtEqD4tvpeQLCxSw2xIeJJdVZgQ3vN1ZMG/gwpDI1IgkEjZmGu/iXxI2aOUy8sa1037H9bIEWoDJ418Dbd2hW0F2QHCepZMsPQ2CQUG98U0QbiYzIGf/jF/BzJUhmli6jT/uNCZlmonx4ii3rg5vGTVLLPSN8GXpVT24ZrELVxTFh/LNSpWquKfRDmWEoK7fThq5NOdFSqYltlDjnNbGnzrlr9mTDFnGkY/NLe/MZaytfSth5AceB+sAXL2GKb62ckSBRd6jO+v4+Y5cNI/OZN5aCChPjWa0GT/gMFGXMfYTcJxLQhicri8Ltv8owLl/nN4JXO5RL/C/xDCEMo0BGQO0X/YHu4BdM0t11yfVVgrTCcR+AuxqpxODXUMcMlAsY41Dju8XSmPTLqXLUC9bsAuQ1jdjooRg8G0vd9SzEC6RIyQ6ueq+XOEhjF0o3QQPEoCi18v8+cHbwEo2fvg6Av4ygLIEe/tFmKzIIN8bY/p55ORhcXGWItDYLcbwJUneIhp2CYTyOOdIzM9P7vnDr1/OXR82bpxK3PsoVjVJZTkw85+Fk44VwFWepf2PXvRp/Gf3qyiZFwFgjpA71MNA72QjtO+f8ZJXnnIibgaNJM6UJDgIjXhzTEPM2JGI2eXDPmIizGpuS1vFnjC0TTkUKWN28m+dUgcfdwXAmoLiMPmw== 347871727@qq.com" >> /home/helloztt/.ssh/authorized_keys
+
+chown -R helloztt:helloztt /home/helloztt/.ssh
+chmod g-rwx /home/helloztt/.ssh
+chmod o-rwx /home/helloztt/.ssh
