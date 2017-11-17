@@ -63,14 +63,14 @@ GZTomcat=`ls /root/setup/install/apache-tomcat*`
 tar -C /usr -xzf $GZTomcat
 
 CATALINA_HOME=`ls /usr/apache-tomcat* -d`
-echo "export HB_CATALINA_HOME=${CATALINA_HOME}" >> /etc/environment
+echo "export HB_CATALINA_HOME=/usr/apache-tomcat-8.0.28" >> /etc/environment
 
 chown -R root:root ${CATALINA_HOME}
 chmod +x ${CATALINA_HOME}/bin/*.sh
 
 # tomcat base 空压缩包
 cp /root/setup/install/tomcat_base.tar.gz ${CATALINA_HOME}/
-echo "export HB_CATALINA_BASE_TAR=${CATALINA_HOME}/tomcat_base.tar.gz" >> /etc/environment
+echo "export HB_CATALINA_BASE_TAR= /usr/apache-tomcat-8.0.28/tomcat_base.tar.gz" >> /etc/environment
 
 # jdbc
 cp /root/setup/jdbc/*.jar ${CATALINA_HOME}/lib
