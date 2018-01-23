@@ -38,7 +38,7 @@ firewall-cmd --add-service=http --permanent
 
 # 获取我们精心准备的发布包 2.0的版本了
 if [[ ! -e /root/setup.tar.gz ]]; then
-  wget -O /root/setup.tar.gz http://resali.huobanplus.com/setup.3.tar.gz
+  wget -O /root/setup.tar.gz http://resali.huobanplus.com/setup.4.tar.gz
 fi
 
 tar -C /root -xzf /root/setup.tar.gz
