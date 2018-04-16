@@ -2,13 +2,21 @@
 # Authored By Cai Jiang
 # 初始化一个CentOS 服务器
 # 该脚本负责初始化 硬盘以及虚拟内存
+# 允许通过新增第二个参数 忽视swap
 if [ $UID -ne 0 ]; then
     echo "Superuser privileges are required to run this script."
     echo "e.g. \"sudo $0\""
     exit 1
 fi
 
+yum -y install lvm2 device-mapper
+
 DISKFILE=$1
+
+SWAPEnable=1
+if $2; then
+    SWAPEnable=0
+fi
 
 if [[ ! $DISKFILE ]]; then
   echo "$0 [Device]"
@@ -42,14 +50,15 @@ if [[ ! $BIG ]]; then
 fi
 
 # free to get total memory
-Memory=`free -g | grep Mem | awk '{print $2}'`
-
-# 计划设置一块跟物理内存一样的虚拟内存
-# echo ${VOLUME}
-# echo ${BIG}
-if [[ ${BIG} -le ${Memory} ]]; then
-  echo "length of ${DISKFILE} is too small to use."
-  exit 1
+if ${SWAPEnable}; then
+    Memory=`free -g | grep Mem | awk '{print $2}'`
+    # 计划设置一块跟物理内存一样的虚拟内存
+    # echo ${VOLUME}
+    # echo ${BIG}
+    if [[ ${BIG} -le ${Memory} ]]; then
+    echo "length of ${DISKFILE} is too small to use."
+    exit 1
+    fi
 fi
 
 lvm pvcreate ${VOLUME}
@@ -68,13 +77,19 @@ fi
 lvm vgcreate -s 16M $NewlyVGName ${VOLUME}
 
 # Create a 10GB logical volume (LV)
-lvm lvcreate -L ${Memory}G -n ${NewlyVGName}SWAP $NewlyVGName
+if ${SWAPEnable}; then
+    lvm lvcreate -L ${Memory}G -n ${NewlyVGName}SWAP $NewlyVGName
+fi
+
 # 检查剩余空间
 OTHER=`lvm vgs | tail -n1 | awk '{print $7}'`
 
 lvm lvcreate -L $OTHER -n ${NewlyVGName}DATA $NewlyVGName
 
-SWAPPATH=`lvm lvdisplay | grep Path.*${NewlyVGName}SWAP | awk '{print $3}'`
+if ${SWAPEnable}; then
+    SWAPPATH=`lvm lvdisplay | grep Path.*${NewlyVGName}SWAP | awk '{print $3}'`
+fi
+
 DATAPATH=`lvm lvdisplay | grep Path.*${NewlyVGName}DATA | awk '{print $3}'`
 
 # data
@@ -98,9 +113,11 @@ mount $DATAPATH $NewlyData
 echo "$DATAPATH $NewlyData    ext3    defaults     0 0" >> /etc/fstab
 
 # swap
-mkswap $SWAPPATH
-echo "$SWAPPATH      swap     swap    defaults     0 0" >> /etc/fstab
-swapon -va
+if $SWAPEnable; then
+    mkswap $SWAPPATH
+    echo "$SWAPPATH      swap     swap    defaults     0 0" >> /etc/fstab
+    swapon -va
+fi
 
 #
 #  如何扩充一个逻辑盘（从物理盘） 
